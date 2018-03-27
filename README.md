@@ -4,7 +4,7 @@
 
 使用说明
 
-    ````java
+    ```java
 		
 		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC&useCursorFetch=true";
 		
@@ -30,6 +30,6 @@
 		con1.close();
 		con2.close();
 		
-    ````
+    ```
 
-注：url中也可以带用户密码，优先使用Properties中设置的。
+注：url中可带用户密码，优先使用properties中设置的。
