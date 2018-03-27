@@ -3,14 +3,11 @@ package com.miboom.xdatasource;
 import java.sql.Connection;
 import java.util.Properties;
 
-import com.miboom.xdatasource.XDataSource;
-import com.miboom.xdatasource.XDataSourceFactory;
-
 import junit.framework.TestCase;
 
 public class TestDataSource extends TestCase {
 
-	public void aatestDBCPGetConnection() throws Exception {
+	public void testDBCPGetConnection() throws Exception {
 		XDataSource ds = XDataSourceFactory.dbcpDataSource(createProperties());
 		try {
 			doGetConnection(ds);
@@ -30,7 +27,6 @@ public class TestDataSource extends TestCase {
 
 	private Properties createProperties() {
 		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC&useCursorFetch=true";
-		// url+="&user=root&password=111";
 		Properties pp = new Properties();
 		pp.setProperty("url", url);
 		pp.setProperty("username", "root");
@@ -44,9 +40,11 @@ public class TestDataSource extends TestCase {
 		System.out.println(con1);
 
 		// 修改：url、用户、密码
-		ds.setUrl("jdbc:mysql://localhost:3306/test?serverTimezone=UTC&useCursorFetch=true");
-		 ds.setUsername("admin");
-		 ds.setPassword("222");
+		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC&useCursorFetch=true";
+		url += "&user=root&password=111";
+		ds.setUrl(url);
+		// 清除属性中的用户密码，使用url中的。
+		ds.clearUsernameAndPassword();
 
 		Connection con2 = ds.getConnection();
 		System.out.println(con2);

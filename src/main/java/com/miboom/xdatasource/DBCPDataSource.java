@@ -40,7 +40,11 @@ class DBCPDataSource extends XDataSource {
 		Properties ps = getDriverConnectionFactoryProperties();
 		if (ps != null) {
 			// 这里的key是user，与url中同。(dbcp2的配置用username)
-			ps.put("user", username);
+			if (username == null) {
+				ps.remove("user");
+			} else {
+				ps.put("user", username);
+			}
 		}
 		ds.setUsername(username);
 	}
@@ -54,9 +58,19 @@ class DBCPDataSource extends XDataSource {
 	public void setPassword(final String password) {
 		Properties ps = getDriverConnectionFactoryProperties();
 		if (ps != null) {
-			ps.put("password", password);
+			if (password == null) {
+				ps.remove("password");
+			} else {
+				ps.put("password", password);
+			}
 		}
 		ds.setPassword(password);
+	}
+
+	@Override
+	public void clearUsernameAndPassword() {
+		setUsername(null);
+		setPassword(null);
 	}
 
 	@Override

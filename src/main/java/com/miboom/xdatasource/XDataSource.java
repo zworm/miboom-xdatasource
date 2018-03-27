@@ -24,13 +24,15 @@ public abstract class XDataSource implements DataSource, AutoCloseable {
 
 	public abstract void setUrl(String url);
 
+	public abstract String getUsername();
+
+	public abstract void setUsername(final String username);
+
 	public abstract String getPassword();
 
 	public abstract void setPassword(final String password);
 
-	public abstract String getUsername();
-
-	public abstract void setUsername(final String username);
+	public abstract void clearUsernameAndPassword();
 
 	public DataSource getDataSource() {
 		return ds;

@@ -11,16 +11,17 @@ import java.lang.reflect.Field;
  *
  */
 class DruidDataSource extends XDataSource {
-	private final static long default_maxWait = 5 * 1000;
+	// private final static long default_maxWait = 60 * 1000;
 	private com.alibaba.druid.pool.DruidDataSource ds;
 
 	DruidDataSource(com.alibaba.druid.pool.DruidDataSource ds) {
 		super(ds);
 		// 如果用户密码不正确，缺省maxWait=-1，会造成无限等待(内部创建连接CreateConnectionThread会无限重试)，而dbcp(maxWaitMillis)则直接抛对应SQL异常。
 		// 设置后，超时则抛异常：com.alibaba.druid.pool.GetConnectionTimeoutException
-		if (ds.getMaxWait() == -1) {
-			ds.setMaxWait(default_maxWait);
-		}
+		// 通常用户密码是正确的，不设置maxWait，也方便调试。
+		// if (ds.getMaxWait() == -1) {
+		// ds.setMaxWait(default_maxWait);
+		// }
 		/**
 		 * <pre>
 		 * fix bug:
@@ -51,6 +52,16 @@ class DruidDataSource extends XDataSource {
 	}
 
 	@Override
+	public String getUsername() {
+		return ds.getUsername();
+	}
+
+	@Override
+	public void setUsername(String username) {
+		setField("username", username);
+	}
+
+	@Override
 	public String getPassword() {
 		return ds.getPassword();
 	}
@@ -61,13 +72,9 @@ class DruidDataSource extends XDataSource {
 	}
 
 	@Override
-	public String getUsername() {
-		return ds.getUsername();
-	}
-
-	@Override
-	public void setUsername(String username) {
-		setField("username", username);
+	public void clearUsernameAndPassword() {
+		setUsername(null);
+		setPassword(null);
 	}
 
 	private void setField(String name, String value) {
