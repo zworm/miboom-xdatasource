@@ -7,6 +7,8 @@ import junit.framework.TestCase;
 
 public class TestDataSource extends TestCase {
 
+	private String baseUrl = "jdbc:mysql://localhost:3306/mysql?serverTimezone=Asia/Shanghai&useCursorFetch=true";
+
 	public void testDBCPGetConnection() throws Exception {
 		XDataSource ds = XDataSourceFactory.dbcpDataSource(createProperties());
 		try {
@@ -26,9 +28,8 @@ public class TestDataSource extends TestCase {
 	}
 
 	private Properties createProperties() {
-		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC&useCursorFetch=true";
 		Properties pp = new Properties();
-		pp.setProperty("url", url);
+		pp.setProperty("url", baseUrl);
 		pp.setProperty("username", "root");
 		pp.setProperty("password", "111");
 		pp.setProperty("initialSize", "0");
@@ -40,8 +41,7 @@ public class TestDataSource extends TestCase {
 		System.out.println(con1);
 
 		// 修改：url、用户、密码
-		String url = "jdbc:mysql://localhost:3306/mysql?serverTimezone=UTC&useCursorFetch=true";
-		url += "&user=root&password=111";
+		String url = baseUrl + "&user=root&password=111";
 		ds.setUrl(url);
 		// 清除属性中的用户密码，使用url中的。
 		ds.clearUsernameAndPassword();
